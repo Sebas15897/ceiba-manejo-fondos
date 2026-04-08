@@ -1,0 +1,27 @@
+@if (message()) {
+  <div
+    role="alert"
+    class="border-b border-amber-200 bg-amber-50 px-4 py-3 text-amber-950 shadow-sm"
+  >
+    <div class="mx-auto flex max-w-6xl items-start gap-3">
+      <span
+        class="mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-amber-200 text-amber-900"
+        aria-hidden="true"
+      >
+        <svg class="size-3" viewBox="0 0 12 12" fill="currentColor">
+          <path
+            d="M6 1a.75.75 0 01.673.418l4.5 9A.75.75 0 0110.5 11h-9a.75.75 0 01-.673-1.082l4.5-9A.75.75 0 016 1zm0 3a.75.75 0 00-.75.75v2a.75.75 0 001.5 0v-2A.75.75 0 006 4zm0 6a1 1 0 100-2 1 1 0 000 2z"
+          />
+        </svg>
+      </span>
+      <p class="min-w-0 flex-1 text-sm leading-relaxed">{{ message() }}</p>
+      <button
+        type="button"
+        (click)="dismiss()"
+        class="shrink-0 rounded-md px-2 py-1 text-sm font-medium text-amber-900 underline-offset-2 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+      >
+        Cerrar
+      </button>
+    </div>
+  </div>
+}
