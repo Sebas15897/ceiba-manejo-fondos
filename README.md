@@ -6,6 +6,8 @@ Aplicación web **interactiva y responsiva** desarrollada como prueba técnica d
 
 No incluye backend real, autenticación ni despliegue: el catálogo y la latencia se **simulan** en el cliente.
 
+**Repositorio público:** <a href="https://github.com/Sebas15897/ceiba-manejo-fondos" target="_blank" rel="noopener noreferrer">github.com/Sebas15897/ceiba-manejo-fondos</a>
+
 ---
 
 ## Cómo ejecutar el proyecto (cómo corre)
@@ -66,6 +68,52 @@ Objetivo: permitir al usuario final:
 6. Ver **mensajes de error** claros (p. ej. saldo insuficiente).
 
 **Supuestos del ejercicio:** usuario único, saldo inicial **COP $500.000**, catálogo fijo según tabla del PDF (cinco fondos).
+
+---
+
+## Checklist de cumplimiento (prueba técnica)
+
+Referencia: enunciado *Prueba Técnica – Ingeniero de Desarrollo Front-End* (BTG · Fondos FPV/FIC).
+
+### Requisitos funcionales
+
+- [x] **1.** Visualizar la lista de fondos disponibles (`/funds`, catálogo NGXS + API simulada).
+- [x] **2.** Suscribirse a un fondo si cumple el **monto mínimo** (formulario reactivo + validadores + reglas en `FundsState`).
+- [x] **3.** Cancelar la participación y ver el **saldo actualizado** (`/portfolio`, acción `CancelParticipation`).
+- [x] **4.** Historial de **suscripciones y cancelaciones** (`/transactions`).
+- [x] **5.** Elegir **notificación por email o SMS** al suscribirse (modal de suscripción + `NotificationMethod`).
+- [x] **6.** Mensajes de error apropiados si **no hay saldo suficiente** (validación `max` + estado `lastError` + banner).
+
+### Requisitos técnicos
+
+- [x] **Stack:** **Angular** (alternativa a Flutter permitida en el enunciado).
+- [x] **UI/UX:** diseño con Tailwind, tipografía, estados vacíos/carga/éxito/error, navegación clara.
+- [x] **Estado:** **NGXS** + RxJS (`Store`, acciones, selectores / `selectSignal`).
+- [x] **Validaciones de formularios:** reactive forms en el modal de suscripción.
+- [x] **Responsive:** vistas en tabla (desktop) y tarjetas (móvil); menú en header.
+- [x] **API REST simulada:** `FundsApiService` (mocks + latencia); catálogo alineado al PDF.
+- [x] **Errores, loading y feedback:** overlay global, toasts, banner de errores, botón reintentar carga.
+- [x] **Código:** estructura por capas (`core`, `modules/funds`, `shared`), TypeScript estricto; comentarios puntuales donde aportan.
+
+### Extras valorados (opcionales)
+
+- [x] **Pruebas unitarias:** **Jest** + `jest-preset-angular` (`npm test`; servicios, estado NGXS, `App`).
+- [x] **TypeScript** en todo el proyecto Angular.
+- [x] **Navegación y ruteo:** **Angular Router** (rutas lazy del módulo fondos, `AppShell`).
+- [x] **Componentes reutilizables:** header, shell, alertas, toasts, overlay, modal de suscripción, etc.
+
+### Consideraciones del enunciado
+
+- [x] Sin lógica de **backend**, **autenticación** ni **despliegue** en el alcance.
+- [x] Usuario único con saldo inicial **COP $500.000** (`INITIAL_WALLET_BALANCE_COP`).
+- [x] **Cinco fondos** del PDF (id, nombre, monto mínimo, categoría FPV/FIC) en `funds-catalog.constants.ts`.
+
+### Entregables
+
+- [x] **README.md** con instrucciones claras de instalación y ejecución (`npm install`, `npm start`, tests).
+- [x] **Video** del funcionamiento (enlace en [Autor y contacto](#autor-y-contacto)).
+- [x] **Capturas** (opcional): cumplido — material visual de los flujos en la entrega.
+- [x] **Repositorio público:** <a href="https://github.com/Sebas15897/ceiba-manejo-fondos" target="_blank" rel="noopener noreferrer">Sebas15897/ceiba-manejo-fondos</a> en GitHub.
 
 ---
 
@@ -130,15 +178,6 @@ src/app/
 
 ---
 
-## Entrega sugerida (repositorio público)
-
-1. Subir el código a **GitHub** o **GitLab**.
-2. Este **README** sirve como instrucciones de ejecución y contexto técnico.
-3. **Video demo (opcional):** <a href="https://drive.google.com/file/d/1Lo-PKPYl-bik27tNB_0d0K9GDxoaxGE_/view?usp=sharing" target="_blank" rel="noopener noreferrer">ver recorrido de la aplicación en Google Drive</a> (se abre en una nueva pestaña).
-4. (Opcional) Incluir también capturas del flujo: carga del catálogo, suscripción con notificación, error por saldo, cancelación e historial.
-
----
-
 ## Autor y contacto
 
 **Sebastián Contreras** — proyecto elaborado para el proceso de selección **Front-End** (caso BTG Fondos FPV/FIC).
@@ -146,3 +185,4 @@ src/app/
 - **Correo:** [sebastiancontreras15897@gmail.com](mailto:sebastiancontreras15897@gmail.com)
 - **LinkedIn:** <a href="https://www.linkedin.com/in/sebasti%C3%A1n-contreras15897/" target="_blank" rel="noopener noreferrer">Sebastián Contreras en LinkedIn</a>
 - **Sitio web:** <a href="https://sebastiancontreras.devsocietysoftware.com/" target="_blank" rel="noopener noreferrer">sebastiancontreras.devsocietysoftware.com</a>
+- **Video demo:** <a href="https://drive.google.com/file/d/1Lo-PKPYl-bik27tNB_0d0K9GDxoaxGE_/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a>
