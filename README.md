@@ -2,6 +2,8 @@
 
 Aplicación web **interactiva y responsiva** desarrollada como prueba técnica de **Ingeniero de Desarrollo Front-End**: gestión de fondos **FPV/FIC** para clientes BTG, con un único usuario y saldo inicial en pesos colombianos.
 
+**Autor:** [Sebastián Contreras](https://sebastiancontreras.devsocietysoftware.com/)
+
 No incluye backend real, autenticación ni despliegue: el catálogo y la latencia se **simulan** en el cliente.
 
 ---
@@ -138,6 +140,8 @@ src/app/
 
 ## Autor y contacto
 
-Proyecto elaborado para el proceso de selección **Front-End** (caso BTG Fondos FPV/FIC).
+**Sebastián Contreras** — proyecto elaborado para el proceso de selección **Front-End** (caso BTG Fondos FPV/FIC).
 
-**Correo de contacto (para entrega):** _[añade aquí tu correo antes de publicar el repositorio]_.
+- **Correo:** [sebastiancontreras15897@gmail.com](mailto:sebastiancontreras15897@gmail.com)
+- **LinkedIn:** [Sebastián Contreras en LinkedIn](https://www.linkedin.com/in/sebasti%C3%A1n-contreras15897/)
+- **Sitio web:** [sebastiancontreras.devsocietysoftware.com](https://sebastiancontreras.devsocietysoftware.com/)
