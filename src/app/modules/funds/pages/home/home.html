@@ -1,1 +1,90 @@
-<p>home works!</p>
+<div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
+  <section
+    class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-brand)] to-[#002952] px-6 py-10 text-white shadow-lg sm:px-10 sm:py-14"
+  >
+    <div
+      class="pointer-events-none absolute -right-20 -top-20 size-64 rounded-full bg-white/10 blur-3xl"
+      aria-hidden="true"
+    ></div>
+    <div class="relative max-w-2xl">
+      <p class="text-sm font-medium uppercase tracking-wider text-white/80">
+        Cliente único · Demo
+      </p>
+      <h1 class="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+        Gestiona tus fondos FPV y FIC
+      </h1>
+      <p class="mt-4 text-base leading-relaxed text-white/90">
+        Consulta el catálogo BTG, suscríbete respetando el monto mínimo, cancela cuando lo
+        necesites y revisa tu historial con trazabilidad clara.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a
+          routerLink="/funds"
+          class="inline-flex items-center justify-center rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-[var(--color-brand)] shadow-sm hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-brand)]"
+        >
+          Ver fondos disponibles
+        </a>
+        <a
+          routerLink="/portfolio"
+          class="inline-flex items-center justify-center rounded-lg border border-white/40 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        >
+          Mi cartera
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-10 grid gap-4 sm:grid-cols-3">
+    <article
+      class="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm"
+    >
+      <p class="text-xs font-medium uppercase tracking-wide text-slate-500">Saldo</p>
+      <p class="mt-2 text-2xl font-semibold tabular-nums text-slate-900">
+        $ {{ balance() | number: '1.0-0' }}
+      </p>
+      <p class="text-sm text-slate-500">COP disponibles</p>
+    </article>
+    <article
+      class="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm"
+    >
+      <p class="text-xs font-medium uppercase tracking-wide text-slate-500">Posiciones</p>
+      <p class="mt-2 text-2xl font-semibold tabular-nums text-slate-900">
+        {{ positions().length }}
+      </p>
+      <p class="text-sm text-slate-500">Fondos activos</p>
+    </article>
+    <article
+      class="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm"
+    >
+      <p class="text-xs font-medium uppercase tracking-wide text-slate-500">Catálogo</p>
+      <p class="mt-2 text-2xl font-semibold tabular-nums text-slate-900">
+        {{ catalog().length }}
+      </p>
+      <p class="text-sm text-slate-500">Fondos listados</p>
+    </article>
+  </section>
+
+  <section class="mt-12">
+    <h2 class="text-lg font-semibold text-slate-900">Accesos rápidos</h2>
+    <ul class="mt-4 grid gap-3 sm:grid-cols-2">
+      <li>
+        <a
+          routerLink="/funds"
+          class="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-[var(--color-brand)]/40 hover:shadow-md"
+        >
+          <span class="font-medium text-slate-800">Catálogo de fondos</span>
+          <span class="text-slate-400" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/transactions"
+          class="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-[var(--color-brand)]/40 hover:shadow-md"
+        >
+          <span class="font-medium text-slate-800">Historial de movimientos</span>
+          <span class="text-slate-400" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+</div>

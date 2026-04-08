@@ -9,6 +9,8 @@ export interface FundsStateModel {
   positions: IPortfolioPosition[];
   transactions: ITransaction[];
   loading: boolean;
+  /** Simula latencia de backend en suscripción / cancelación. */
+  operationLoading: boolean;
   lastError: string | null;
 }
 
@@ -18,5 +20,6 @@ export const FUNDS_STATE_DEFAULTS: FundsStateModel = {
   positions: [],
   transactions: [],
   loading: false,
+  operationLoading: false,
   lastError: null,
 };

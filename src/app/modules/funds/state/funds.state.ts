@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action, NgxsOnInit, Selector, State, StateContext } from '@ngxs/store';
-import { catchError, EMPTY, tap } from 'rxjs';
+import { catchError, EMPTY, tap, timer } from 'rxjs';
 
 import { FundsApiService } from '../../../core/services/funds-api.service';
 import {
@@ -12,6 +12,9 @@ import {
 import { FUNDS_STATE_DEFAULTS, type FundsStateModel } from './funds.state.model';
 import type { ITransaction } from '../../../core/interfaces/transaction.interface';
 import type { IPortfolioPosition } from '../../../core/interfaces/portfolio-position.interface';
+
+/** Latencia simulada para suscripción y cancelación (ms). */
+const SIMULATED_OP_DELAY_MS = 820;
 
 @State<FundsStateModel>({
   name: 'funds',
@@ -51,6 +54,16 @@ export class FundsState implements NgxsOnInit {
   }
 
   @Selector()
+  static operationLoading(state: FundsStateModel): boolean {
+    return state.operationLoading;
+  }
+
+  @Selector()
+  static blockingUi(state: FundsStateModel): boolean {
+    return state.loading || state.operationLoading;
+  }
+
+  @Selector()
   static lastError(state: FundsStateModel): string | null {
     return state.lastError;
   }
@@ -84,6 +97,40 @@ export class FundsState implements NgxsOnInit {
 
   @Action(SubscribeToFund)
   subscribe(ctx: StateContext<FundsStateModel>, action: SubscribeToFund) {
+    ctx.patchState({ operationLoading: true, lastError: null });
+    return timer(SIMULATED_OP_DELAY_MS).pipe(
+      tap({
+        next: () => {
+          try {
+            this.applySubscribe(ctx, action);
+          } finally {
+            ctx.patchState({ operationLoading: false });
+          }
+        },
+      }),
+    );
+  }
+
+  @Action(CancelParticipation)
+  cancel(ctx: StateContext<FundsStateModel>, action: CancelParticipation) {
+    ctx.patchState({ operationLoading: true, lastError: null });
+    return timer(SIMULATED_OP_DELAY_MS).pipe(
+      tap({
+        next: () => {
+          try {
+            this.applyCancel(ctx, action);
+          } finally {
+            ctx.patchState({ operationLoading: false });
+          }
+        },
+      }),
+    );
+  }
+
+  private applySubscribe(
+    ctx: StateContext<FundsStateModel>,
+    action: SubscribeToFund,
+  ): void {
     const state = ctx.getState();
     const { fundId, amount, notificationMethod } = action.payload;
     const fund = state.catalog.find((f) => f.id === fundId);
@@ -141,8 +188,10 @@ export class FundsState implements NgxsOnInit {
     });
   }
 
-  @Action(CancelParticipation)
-  cancel(ctx: StateContext<FundsStateModel>, action: CancelParticipation) {
+  private applyCancel(
+    ctx: StateContext<FundsStateModel>,
+    action: CancelParticipation,
+  ): void {
     const state = ctx.getState();
     const position = state.positions.find((p) => p.fundId === action.fundId);
 
