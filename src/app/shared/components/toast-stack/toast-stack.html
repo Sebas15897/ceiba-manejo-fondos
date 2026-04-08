@@ -1,0 +1,65 @@
+<div
+  class="pointer-events-none fixed right-4 top-4 z-[70] flex w-[min(100vw-2rem,22rem)] flex-col gap-2 sm:right-6 sm:top-6"
+  aria-live="polite"
+  aria-relevant="additions removals"
+>
+  @for (t of toasts(); track t.id) {
+    <div [class]="rowClass(t)" role="status">
+      <span class="mt-0.5 shrink-0" aria-hidden="true">
+        @switch (t.type) {
+          @case ('success') {
+            <span class="flex size-8 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </span>
+          }
+          @case ('warning') {
+            <span class="flex size-8 items-center justify-center rounded-full bg-amber-100 text-amber-800">
+              <svg class="size-4" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fill-rule="evenodd"
+                  d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l6.518 11.597c.75 1.334-.213 2.98-1.742 2.98H3.48c-1.53 0-2.493-1.646-1.743-2.98L8.257 3.1zM11 14a1 1 0 10-2 0 1 1 0 002 0zm-1-2a1 1 0 01-1-1V7a1 1 0 112 0v4a1 1 0 01-1 1z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </span>
+          }
+          @default {
+            <span class="flex size-8 items-center justify-center rounded-full bg-blue-100 text-[var(--color-brand)]">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z"
+                />
+              </svg>
+            </span>
+          }
+        }
+      </span>
+      <p class="min-w-0 flex-1 pt-1 text-sm leading-snug text-slate-800">{{ t.message }}</p>
+      <button
+        type="button"
+        (click)="dismiss(t.id)"
+        class="shrink-0 rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+        aria-label="Cerrar notificación"
+      >
+        <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
+  }
+</div>

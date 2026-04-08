@@ -1,5 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, effect, inject, input, output, type Signal } from '@angular/core';
+import { Component, effect, inject, input, output, signal, type Signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '@ngxs/store';
 
@@ -29,6 +29,8 @@ export class SubscribeFundModal {
     amount: this.fb.control<number | null>(null, Validators.required),
     notificationMethod: this.fb.nonNullable.control(NotificationMethod.Email),
   });
+
+  protected readonly submitting = signal(false);
 
   constructor() {
     effect(() => {
@@ -65,17 +67,24 @@ export class SubscribeFundModal {
 
     const f = this.fund();
     const raw = this.form.getRawValue();
-    this.store.dispatch(
-      new SubscribeToFund({
-        fundId: f.id,
-        amount: Number(raw.amount),
-        notificationMethod: raw.notificationMethod,
-      }),
-    );
+    this.submitting.set(true);
 
-    const err = this.store.selectSnapshot(FundsState.lastError);
-    if (!err) {
-      this.close();
-    }
+    this.store
+      .dispatch(
+        new SubscribeToFund({
+          fundId: f.id,
+          amount: Number(raw.amount),
+          notificationMethod: raw.notificationMethod,
+        }),
+      )
+      .subscribe({
+        complete: () => {
+          this.submitting.set(false);
+          const err = this.store.selectSnapshot(FundsState.lastError);
+          if (!err) {
+            this.close();
+          }
+        },
+      });
   }
 }

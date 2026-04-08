@@ -4,12 +4,14 @@ import { Store } from '@ngxs/store';
 
 import { ClearFundsError } from '../../../../modules/funds/state/funds.actions';
 import { FundsState } from '../../../../modules/funds/state/funds.state';
+import { GlobalLoadingOverlay } from '../../global-loading-overlay/global-loading-overlay';
+import { ToastStack } from '../../toast-stack/toast-stack';
 import { AlertBanner } from '../../alert-banner/alert-banner';
 import { Header } from '../header/header';
 
 @Component({
   selector: 'app-shell',
-  imports: [RouterOutlet, Header, AlertBanner],
+  imports: [RouterOutlet, Header, AlertBanner, ToastStack, GlobalLoadingOverlay],
   templateUrl: './app-shell.html',
   styleUrl: './app-shell.scss',
 })

@@ -1,0 +1,26 @@
+@if (blocking()) {
+  <div
+    class="fixed inset-0 z-[55] flex flex-col items-center justify-center bg-slate-900/35 backdrop-blur-[2px]"
+    role="alert"
+    aria-busy="true"
+    aria-live="assertive"
+  >
+    <div
+      class="flex max-w-sm flex-col items-center rounded-2xl border border-white/20 bg-white/95 px-8 py-8 shadow-xl"
+    >
+      <div
+        class="size-12 animate-spin rounded-full border-4 border-slate-200 border-t-[var(--color-brand)]"
+        aria-hidden="true"
+      ></div>
+      <p class="mt-5 text-center text-sm font-medium text-slate-800">
+        @if (operationLoading()) {
+          Procesando operación en el servidor…
+        } @else if (loading()) {
+          Consultando catálogo de fondos…
+        } @else {
+          Cargando…
+        }
+      </p>
+    </div>
+  </div>
+}

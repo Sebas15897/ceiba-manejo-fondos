@@ -12,7 +12,7 @@ import type { IHttpMockOptions } from '../interfaces/http.interface';
 @Injectable({ providedIn: 'root' })
 export class FundsApiService {
   getFunds(options?: IHttpMockOptions): Observable<IDefaultResponse<IFund[]>> {
-    const delayMs = options?.delayMs ?? 450;
+    const delayMs = options?.delayMs ?? 900;
 
     if (options?.fail) {
       return throwError(

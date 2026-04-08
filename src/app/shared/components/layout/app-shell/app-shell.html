@@ -1,7 +1,9 @@
 <div class="flex min-h-screen flex-col">
+  <app-global-loading-overlay />
   <app-header />
   <app-alert-banner [message]="bannerMessage()" (dismissed)="onBannerDismiss()" />
   <main class="flex-1">
     <router-outlet />
   </main>
+  <app-toast-stack />
 </div>
