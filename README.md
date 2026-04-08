@@ -35,13 +35,20 @@ npm run build
 
 Los artefactos se generan en `dist/btg-fondos/`.
 
-### Pruebas unitarias
+### Pruebas unitarias (Jest)
 
 ```bash
 npm test
 ```
 
-(Runner: Vitest vía Angular CLI.)
+Modo watch y cobertura:
+
+```bash
+npm run test:watch
+npm run test:coverage
+```
+
+Configuración: **`jest.config.cjs`**, **`jest-preset-angular`**, entorno de zona en **`setup-jest.ts`**. Los tests viven en archivos `*.spec.ts` junto al código. **`ng test`** no está configurado en este proyecto; usa los scripts npm anteriores.
 
 ---
 
@@ -71,6 +78,7 @@ Objetivo: permitir al usuario final:
 | Reactividad async | **RxJS** (API simulada, acciones con retardo) |
 | Formularios | **Reactive forms** (suscripción: monto + método de notificación) |
 | Locale | **`es-CO`** (`LOCALE_ID`, `registerLocaleData`) para montos y fechas |
+| Tests unitarios | **Jest 30** + **jest-preset-angular** + **zone.js** |
 
 ---
 
@@ -106,7 +114,9 @@ src/app/
 | `npm start` | Servidor de desarrollo (`ng serve`) |
 | `npm run build` | Build de producción |
 | `npm run watch` | Build en modo desarrollo con watch |
-| `npm test` | Tests unitarios |
+| `npm test` | Tests unitarios (Jest) |
+| `npm run test:watch` | Jest en modo watch |
+| `npm run test:coverage` | Jest con informe de cobertura (`coverage/jest/`) |
 | `npx ng …` | Cualquier comando del Angular CLI |
 
 ---
