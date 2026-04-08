@@ -130,15 +130,6 @@ src/app/
 
 ---
 
-## Entrega sugerida (repositorio público)
-
-1. Subir el código a **GitHub** o **GitLab**.
-2. Este **README** sirve como instrucciones de ejecución y contexto técnico.
-3. **Video demo (opcional):** <a href="https://drive.google.com/file/d/1Lo-PKPYl-bik27tNB_0d0K9GDxoaxGE_/view?usp=sharing" target="_blank" rel="noopener noreferrer">ver recorrido de la aplicación en Google Drive</a> (se abre en una nueva pestaña).
-4. (Opcional) Incluir también capturas del flujo: carga del catálogo, suscripción con notificación, error por saldo, cancelación e historial.
-
----
-
 ## Autor y contacto
 
 **Sebastián Contreras** — proyecto elaborado para el proceso de selección **Front-End** (caso BTG Fondos FPV/FIC).
@@ -146,3 +137,4 @@ src/app/
 - **Correo:** [sebastiancontreras15897@gmail.com](mailto:sebastiancontreras15897@gmail.com)
 - **LinkedIn:** <a href="https://www.linkedin.com/in/sebasti%C3%A1n-contreras15897/" target="_blank" rel="noopener noreferrer">Sebastián Contreras en LinkedIn</a>
 - **Sitio web:** <a href="https://sebastiancontreras.devsocietysoftware.com/" target="_blank" rel="noopener noreferrer">sebastiancontreras.devsocietysoftware.com</a>
+- **Video demo:** <a href="https://drive.google.com/file/d/1Lo-PKPYl-bik27tNB_0d0K9GDxoaxGE_/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a>
