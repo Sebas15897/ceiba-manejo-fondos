@@ -2,7 +2,7 @@
 
 Aplicación web **interactiva y responsiva** desarrollada como prueba técnica de **Ingeniero de Desarrollo Front-End**: gestión de fondos **FPV/FIC** para clientes BTG, con un único usuario y saldo inicial en pesos colombianos.
 
-**Autor:** [Sebastián Contreras](https://sebastiancontreras.devsocietysoftware.com/)
+**Autor:** <a href="https://sebastiancontreras.devsocietysoftware.com/" target="_blank" rel="noopener noreferrer">Sebastián Contreras</a>
 
 No incluye backend real, autenticación ni despliegue: el catálogo y la latencia se **simulan** en el cliente.
 
@@ -134,7 +134,8 @@ src/app/
 
 1. Subir el código a **GitHub** o **GitLab**.
 2. Este **README** sirve como instrucciones de ejecución y contexto técnico.
-3. (Opcional) Incluir capturas o un video corto del flujo: carga del catálogo, suscripción con notificación, error por saldo, cancelación e historial.
+3. **Video demo (opcional):** <a href="https://drive.google.com/file/d/1Lo-PKPYl-bik27tNB_0d0K9GDxoaxGE_/view?usp=sharing" target="_blank" rel="noopener noreferrer">ver recorrido de la aplicación en Google Drive</a> (se abre en una nueva pestaña).
+4. (Opcional) Incluir también capturas del flujo: carga del catálogo, suscripción con notificación, error por saldo, cancelación e historial.
 
 ---
 
@@ -143,5 +144,5 @@ src/app/
 **Sebastián Contreras** — proyecto elaborado para el proceso de selección **Front-End** (caso BTG Fondos FPV/FIC).
 
 - **Correo:** [sebastiancontreras15897@gmail.com](mailto:sebastiancontreras15897@gmail.com)
-- **LinkedIn:** [Sebastián Contreras en LinkedIn](https://www.linkedin.com/in/sebasti%C3%A1n-contreras15897/)
-- **Sitio web:** [sebastiancontreras.devsocietysoftware.com](https://sebastiancontreras.devsocietysoftware.com/)
+- **LinkedIn:** <a href="https://www.linkedin.com/in/sebasti%C3%A1n-contreras15897/" target="_blank" rel="noopener noreferrer">Sebastián Contreras en LinkedIn</a>
+- **Sitio web:** <a href="https://sebastiancontreras.devsocietysoftware.com/" target="_blank" rel="noopener noreferrer">sebastiancontreras.devsocietysoftware.com</a>
