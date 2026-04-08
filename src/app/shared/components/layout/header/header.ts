@@ -1,6 +1,9 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal, type Signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Store } from '@ngxs/store';
+
+import { FundsState } from '../../../../modules/funds/state/funds.state';
 
 @Component({
   selector: 'app-header',
@@ -9,8 +12,9 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styleUrl: './header.scss',
 })
 export class Header {
-  /** Saldo mock solo para maquetación; luego vendrá del store. */
-  protected readonly mockBalanceCop = 500_000;
+  private readonly store = inject(Store);
+
+  protected readonly balance = this.store.selectSignal(FundsState.balance) as Signal<number>;
 
   protected readonly menuOpen = signal(false);
 

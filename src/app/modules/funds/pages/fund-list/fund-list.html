@@ -4,103 +4,118 @@
       Fondos disponibles
     </h1>
     <p class="mt-2 text-slate-600">
-      Revise el monto mínimo por fondo e inicie una suscripción. Los datos se cargarán desde la
-      API simulada al conectar el state.
+      Catálogo cargado desde la API simulada. Suscríbase respetando el monto mínimo y su saldo
+      disponible.
     </p>
   </header>
 
-  <!-- Bloque de carga: referencia visual; activar con NGXS `loading`. -->
-  <div
-    class="mb-8 hidden rounded-2xl border border-dashed border-slate-200 bg-white/60 p-6"
-    aria-hidden="true"
-  >
-    <p class="text-sm font-medium text-slate-500">Ejemplo estado de carga</p>
-    <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      @for (i of [1, 2, 3]; track i) {
-        <div class="h-36 animate-pulse rounded-xl bg-slate-100"></div>
+  @if (loading()) {
+    <div class="mb-8 rounded-2xl border border-slate-200 bg-white/80 p-6 shadow-sm">
+      <p class="text-sm font-medium text-slate-500">Cargando catálogo…</p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        @for (i of [1, 2, 3, 4, 5]; track i) {
+          <div class="h-36 animate-pulse rounded-xl bg-slate-100"></div>
+        }
+      </div>
+    </div>
+  } @else if (funds().length === 0) {
+    <div
+      class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white px-6 py-14 text-center"
+    >
+      <p class="text-slate-600">No se pudo obtener el listado de fondos.</p>
+      <button
+        type="button"
+        (click)="retryLoad()"
+        class="mt-4 rounded-lg bg-[var(--color-brand)] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[var(--color-brand-light)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)]"
+      >
+        Reintentar
+      </button>
+    </div>
+  } @else {
+    <div class="grid gap-4 lg:hidden">
+      @for (fund of funds(); track fund.id) {
+        <article
+          class="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+        >
+          <div class="flex items-start justify-between gap-2">
+            <div class="min-w-0">
+              <p class="font-mono text-xs text-slate-400">ID {{ fund.id }}</p>
+              <h2 class="mt-1 text-base font-semibold leading-snug text-slate-900">
+                {{ fund.name }}
+              </h2>
+            </div>
+            <span
+              class="shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold"
+              [class]="categoryClass(fund.category)"
+            >
+              {{ fund.category }}
+            </span>
+          </div>
+          <dl class="mt-4 grid grid-cols-2 gap-3 border-t border-slate-100 pt-4 text-sm">
+            <div>
+              <dt class="text-slate-500">Mínimo</dt>
+              <dd class="mt-0.5 font-semibold tabular-nums text-slate-900">
+                $ {{ fund.minimumAmount | number: '1.0-0' }} COP
+              </dd>
+            </div>
+          </dl>
+          <button
+            type="button"
+            (click)="openSubscribe(fund)"
+            [disabled]="isSubscribed(fund.id)"
+            class="mt-5 w-full rounded-lg bg-[var(--color-brand)] py-2.5 text-sm font-semibold text-white hover:bg-[var(--color-brand-light)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {{ isSubscribed(fund.id) ? 'Ya suscrito' : 'Suscribirse' }}
+          </button>
+        </article>
       }
     </div>
-  </div>
 
-  <div class="grid gap-4 lg:hidden">
-    @for (fund of funds; track fund.id) {
-      <article
-        class="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
-      >
-        <div class="flex items-start justify-between gap-2">
-          <div class="min-w-0">
-            <p class="font-mono text-xs text-slate-400">ID {{ fund.id }}</p>
-            <h2 class="mt-1 text-base font-semibold leading-snug text-slate-900">
-              {{ fund.name }}
-            </h2>
-          </div>
-          <span
-            class="shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold"
-            [class]="categoryClass(fund.category)"
-          >
-            {{ fund.category }}
-          </span>
-        </div>
-        <dl class="mt-4 grid grid-cols-2 gap-3 border-t border-slate-100 pt-4 text-sm">
-          <div>
-            <dt class="text-slate-500">Mínimo</dt>
-            <dd class="mt-0.5 font-semibold tabular-nums text-slate-900">
-              $ {{ fund.minimumAmount | number: '1.0-0' }} COP
-            </dd>
-          </div>
-        </dl>
-        <button
-          type="button"
-          (click)="openSubscribe(fund)"
-          class="mt-5 w-full rounded-lg bg-[var(--color-brand)] py-2.5 text-sm font-semibold text-white hover:bg-[var(--color-brand-light)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)] focus-visible:ring-offset-2"
-        >
-          Suscribirse
-        </button>
-      </article>
-    }
-  </div>
-
-  <div class="hidden overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:block">
-    <table class="w-full text-left text-sm">
-      <thead class="border-b border-slate-200 bg-slate-50/80">
-        <tr>
-          <th scope="col" class="px-6 py-3.5 font-semibold text-slate-700">ID</th>
-          <th scope="col" class="px-6 py-3.5 font-semibold text-slate-700">Nombre</th>
-          <th scope="col" class="px-6 py-3.5 font-semibold text-slate-700">Categoría</th>
-          <th scope="col" class="px-6 py-3.5 font-semibold text-slate-700">Monto mínimo</th>
-          <th scope="col" class="px-6 py-3.5 font-semibold text-slate-700"><span class="sr-only">Acciones</span></th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-slate-100">
-        @for (fund of funds; track fund.id) {
-          <tr class="hover:bg-slate-50/80">
-            <td class="px-6 py-4 font-mono text-slate-500">{{ fund.id }}</td>
-            <td class="px-6 py-4 font-medium text-slate-900">{{ fund.name }}</td>
-            <td class="px-6 py-4">
-              <span
-                class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold"
-                [class]="categoryClass(fund.category)"
-              >
-                {{ fund.category }}
-              </span>
-            </td>
-            <td class="px-6 py-4 tabular-nums text-slate-800">
-              $ {{ fund.minimumAmount | number: '1.0-0' }} COP
-            </td>
-            <td class="px-6 py-4 text-right">
-              <button
-                type="button"
-                (click)="openSubscribe(fund)"
-                class="rounded-lg bg-[var(--color-brand)] px-4 py-2 text-xs font-semibold text-white hover:bg-[var(--color-brand-light)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)]"
-              >
-                Suscribirse
-              </button>
-            </td>
+    <div class="hidden overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:block">
+      <table class="w-full text-left text-sm">
+        <thead class="border-b border-slate-200 bg-slate-50/80">
+          <tr>
+            <th scope="col" class="px-6 py-3.5 font-semibold text-slate-700">ID</th>
+            <th scope="col" class="px-6 py-3.5 font-semibold text-slate-700">Nombre</th>
+            <th scope="col" class="px-6 py-3.5 font-semibold text-slate-700">Categoría</th>
+            <th scope="col" class="px-6 py-3.5 font-semibold text-slate-700">Monto mínimo</th>
+            <th scope="col" class="px-6 py-3.5 font-semibold text-slate-700">
+              <span class="sr-only">Acciones</span>
+            </th>
           </tr>
-        }
-      </tbody>
-    </table>
-  </div>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          @for (fund of funds(); track fund.id) {
+            <tr class="hover:bg-slate-50/80">
+              <td class="px-6 py-4 font-mono text-slate-500">{{ fund.id }}</td>
+              <td class="px-6 py-4 font-medium text-slate-900">{{ fund.name }}</td>
+              <td class="px-6 py-4">
+                <span
+                  class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold"
+                  [class]="categoryClass(fund.category)"
+                >
+                  {{ fund.category }}
+                </span>
+              </td>
+              <td class="px-6 py-4 tabular-nums text-slate-800">
+                $ {{ fund.minimumAmount | number: '1.0-0' }} COP
+              </td>
+              <td class="px-6 py-4 text-right">
+                <button
+                  type="button"
+                  (click)="openSubscribe(fund)"
+                  [disabled]="isSubscribed(fund.id)"
+                  class="rounded-lg bg-[var(--color-brand)] px-4 py-2 text-xs font-semibold text-white hover:bg-[var(--color-brand-light)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)] disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {{ isSubscribed(fund.id) ? 'Suscrito' : 'Suscribirse' }}
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
 </div>
 
 @if (subscribeTarget(); as f) {

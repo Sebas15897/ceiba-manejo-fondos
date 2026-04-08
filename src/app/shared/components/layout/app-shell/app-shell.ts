@@ -1,6 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, type Signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Store } from '@ngxs/store';
 
+import { ClearFundsError } from '../../../../modules/funds/state/funds.actions';
+import { FundsState } from '../../../../modules/funds/state/funds.state';
 import { AlertBanner } from '../../alert-banner/alert-banner';
 import { Header } from '../header/header';
 
@@ -11,10 +14,13 @@ import { Header } from '../header/header';
   styleUrl: './app-shell.scss',
 })
 export class AppShell {
-  /** Mensaje global mock; conectar a NGXS `lastError` después. */
-  protected readonly bannerMessage = signal<string | null>(null);
+  private readonly store = inject(Store);
+
+  protected readonly bannerMessage = this.store.selectSignal(
+    FundsState.lastError,
+  ) as Signal<string | null>;
 
   protected onBannerDismiss(): void {
-    this.bannerMessage.set(null);
+    this.store.dispatch(new ClearFundsError());
   }
 }

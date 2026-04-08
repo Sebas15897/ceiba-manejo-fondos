@@ -1,6 +1,11 @@
 import { DecimalPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, type Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Store } from '@ngxs/store';
+
+import type { IFund } from '../../../../core/interfaces/fund.interface';
+import type { IPortfolioPosition } from '../../../../core/interfaces/portfolio-position.interface';
+import { FundsState } from '../../state/funds.state';
 
 @Component({
   selector: 'app-home',
@@ -9,8 +14,11 @@ import { RouterLink } from '@angular/router';
   styleUrl: './home.scss',
 })
 export class Home {
-  /** Cifras mock para la portada; luego se enlazan al state. */
-  protected readonly mockBalance = 500_000;
-  protected readonly mockPositions = 2;
-  protected readonly mockFundsCount = 5;
+  private readonly store = inject(Store);
+
+  protected readonly balance = this.store.selectSignal(FundsState.balance) as Signal<number>;
+  protected readonly positions = this.store.selectSignal(FundsState.positions) as Signal<
+    IPortfolioPosition[]
+  >;
+  protected readonly catalog = this.store.selectSignal(FundsState.catalog) as Signal<IFund[]>;
 }

@@ -1,35 +1,49 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, effect, input, output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, effect, inject, input, output, type Signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Store } from '@ngxs/store';
 
 import { NotificationMethod } from '../../../../core/enums/notification-method.enum';
 import type { IFund } from '../../../../core/interfaces/fund.interface';
+import { SubscribeToFund } from '../../state/funds.actions';
+import { FundsState } from '../../state/funds.state';
 
-/**
- * Modal de suscripción: solo maquetación y campos locales.
- * La validación y el dispatch al store se conectarán después.
- */
 @Component({
   selector: 'app-subscribe-fund-modal',
-  imports: [FormsModule, DecimalPipe],
+  imports: [ReactiveFormsModule, DecimalPipe],
   templateUrl: './subscribe-fund-modal.html',
   styleUrl: './subscribe-fund-modal.scss',
 })
 export class SubscribeFundModal {
-  readonly fund = input.required<IFund>();
+  private readonly fb = inject(FormBuilder);
+  private readonly store = inject(Store);
 
+  readonly fund = input.required<IFund>();
   readonly closed = output<void>();
+
+  protected readonly balance = this.store.selectSignal(FundsState.balance) as Signal<number>;
 
   protected readonly NotificationMethod = NotificationMethod;
 
-  protected amount = 0;
-  protected notificationMethod: NotificationMethod = NotificationMethod.Email;
+  protected readonly form = this.fb.nonNullable.group({
+    amount: this.fb.control<number | null>(null, Validators.required),
+    notificationMethod: this.fb.nonNullable.control(NotificationMethod.Email),
+  });
 
   constructor() {
     effect(() => {
       const f = this.fund();
-      this.amount = f.minimumAmount;
-      this.notificationMethod = NotificationMethod.Email;
+      const bal = this.balance();
+      const amountCtrl = this.form.controls.amount;
+      amountCtrl.setValidators([
+        Validators.required,
+        Validators.min(f.minimumAmount),
+        Validators.max(bal),
+      ]);
+      amountCtrl.setValue(f.minimumAmount);
+      this.form.controls.notificationMethod.setValue(NotificationMethod.Email);
+      amountCtrl.markAsUntouched();
+      amountCtrl.updateValueAndValidity();
     });
   }
 
@@ -44,7 +58,24 @@ export class SubscribeFundModal {
   }
 
   protected submit(): void {
-    // Diseño: solo cierra; luego se enlaza al formulario reactivo + NGXS.
-    this.close();
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    const f = this.fund();
+    const raw = this.form.getRawValue();
+    this.store.dispatch(
+      new SubscribeToFund({
+        fundId: f.id,
+        amount: Number(raw.amount),
+        notificationMethod: raw.notificationMethod,
+      }),
+    );
+
+    const err = this.store.selectSnapshot(FundsState.lastError);
+    if (!err) {
+      this.close();
+    }
   }
 }

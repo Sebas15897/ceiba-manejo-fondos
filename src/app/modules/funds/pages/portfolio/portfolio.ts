@@ -1,8 +1,11 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, type Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Store } from '@ngxs/store';
 
 import type { IPortfolioPosition } from '../../../../core/interfaces/portfolio-position.interface';
+import { CancelParticipation } from '../../state/funds.actions';
+import { FundsState } from '../../state/funds.state';
 
 @Component({
   selector: 'app-portfolio',
@@ -11,24 +14,13 @@ import type { IPortfolioPosition } from '../../../../core/interfaces/portfolio-p
   styleUrl: './portfolio.scss',
 })
 export class Portfolio {
-  /** Posiciones mock; luego `FundsState.positions`. */
-  protected readonly positions: IPortfolioPosition[] = [
-    {
-      fundId: 3,
-      fundName: 'DEUDAPRIVADA',
-      investedAmount: 50_000,
-      subscribedAt: '2026-04-05T14:30:00.000Z',
-    },
-    {
-      fundId: 1,
-      fundName: 'FPV_BTG_PACTUAL_RECAUDADORA',
-      investedAmount: 100_000,
-      subscribedAt: '2026-04-06T10:00:00.000Z',
-    },
-  ];
+  private readonly store = inject(Store);
 
-  protected cancelMock(fundName: string): void {
-    // Solo UI: luego `dispatch(CancelParticipation)`.
-    void fundName;
+  protected readonly positions = this.store.selectSignal(FundsState.positions) as Signal<
+    IPortfolioPosition[]
+  >;
+
+  protected cancel(fundId: number): void {
+    this.store.dispatch(new CancelParticipation(fundId));
   }
 }

@@ -51,23 +51,47 @@
             $ {{ fund().minimumAmount | number: '1.0-0' }} COP
           </dd>
         </div>
+        <div class="col-span-2 border-t border-slate-200 pt-3">
+          <dt class="text-slate-500">Saldo disponible</dt>
+          <dd class="mt-0.5 font-semibold tabular-nums text-slate-900">
+            $ {{ balance() | number: '1.0-0' }} COP
+          </dd>
+        </div>
       </dl>
 
-      <form class="space-y-5" (ngSubmit)="submit()">
+      <form class="space-y-5" [formGroup]="form" (ngSubmit)="submit()">
         <div>
           <label for="sub-amount" class="block text-sm font-medium text-slate-700">
             Monto a invertir (COP)
           </label>
           <input
             id="sub-amount"
-            name="amount"
             type="number"
-            [(ngModel)]="amount"
-            class="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-slate-900 tabular-nums shadow-sm outline-none transition focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+            formControlName="amount"
+            class="mt-1.5 w-full rounded-lg border px-3 py-2.5 text-slate-900 tabular-nums shadow-sm outline-none transition focus:ring-2 focus:ring-[var(--color-brand)]/20"
+            [class.border-slate-200]="
+              !form.controls.amount.touched || !form.controls.amount.invalid
+            "
+            [class.border-red-400]="form.controls.amount.touched && form.controls.amount.invalid"
           />
-          <p class="mt-1.5 text-xs text-slate-500">
-            Debe ser igual o mayor al mínimo y no superar su saldo disponible.
-          </p>
+          @if (form.controls.amount.touched && form.controls.amount.hasError('required')) {
+            <p class="mt-1.5 text-xs text-red-600">Ingrese un monto.</p>
+          }
+          @if (form.controls.amount.touched && form.controls.amount.hasError('min')) {
+            <p class="mt-1.5 text-xs text-red-600">
+              El monto debe ser al menos
+              {{ fund().minimumAmount | number: '1.0-0' }} COP.
+            </p>
+          }
+          @if (form.controls.amount.touched && form.controls.amount.hasError('max')) {
+            <p class="mt-1.5 text-xs text-red-600">Saldo insuficiente para este monto.</p>
+          }
+          @if (form.controls.amount.touched && form.controls.amount.valid) {
+            <p class="mt-1.5 text-xs text-slate-500">
+              Entre {{ fund().minimumAmount | number: '1.0-0' }} y
+              {{ balance() | number: '1.0-0' }} COP.
+            </p>
+          }
         </div>
 
         <fieldset>
@@ -81,9 +105,8 @@
             >
               <input
                 type="radio"
-                name="notificationMethod"
+                formControlName="notificationMethod"
                 [value]="NotificationMethod.Email"
-                [(ngModel)]="notificationMethod"
               />
               <span class="text-sm text-slate-800">Correo electrónico</span>
             </label>
@@ -92,9 +115,8 @@
             >
               <input
                 type="radio"
-                name="notificationMethod"
+                formControlName="notificationMethod"
                 [value]="NotificationMethod.Sms"
-                [(ngModel)]="notificationMethod"
               />
               <span class="text-sm text-slate-800">SMS</span>
             </label>
@@ -111,7 +133,8 @@
           </button>
           <button
             type="submit"
-            class="rounded-lg bg-[var(--color-brand)] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[var(--color-brand-light)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)] focus-visible:ring-offset-2"
+            class="rounded-lg bg-[var(--color-brand)] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[var(--color-brand-light)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            [disabled]="form.invalid"
           >
             Confirmar suscripción
           </button>

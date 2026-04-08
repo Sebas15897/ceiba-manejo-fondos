@@ -8,7 +8,7 @@
     </p>
   </header>
 
-  @if (transactions.length === 0) {
+  @if (transactions().length === 0) {
     <div
       class="rounded-2xl border border-dashed border-slate-200 bg-white px-6 py-14 text-center text-slate-500"
     >
@@ -16,7 +16,7 @@
     </div>
   } @else {
     <div class="grid gap-3 lg:hidden">
-      @for (tx of transactions; track tx.id) {
+      @for (tx of transactions(); track tx.id) {
         <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
           <div class="flex items-center justify-between gap-2">
             <span
@@ -58,7 +58,7 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100">
-            @for (tx of transactions; track tx.id) {
+            @for (tx of transactions(); track tx.id) {
               <tr class="hover:bg-slate-50/80">
                 <td class="whitespace-nowrap px-6 py-4 text-slate-600 tabular-nums">
                   {{ tx.createdAt | date: 'medium' }}
